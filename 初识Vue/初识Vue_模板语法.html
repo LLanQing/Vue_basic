@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>初识Vue</title>
+	<!-- 引入Vue -->
+	<script src="../js/vue.js"></script>
+</head>
+
+<body>
+	<!-- 准备好一个容器，容器里面的代码被称为【Vue模板】（template）
+        1.容器和Vue实例是一一对应的，容器如果有多个对应一个Vue实例，则只使用第一个容器，
+        Vue实例如果是多个对应一个容器，则只有第一个Vue实例生效，后面的实例都会被忽略；
+        2.真实开发中只有一个Vue实例，配合组件一起使用；
+        3.插值语法{{xxx}}，xxx要写JS表达式，且xxx会自动读取Vue实例中的data属性；
+        4.指令语法，指令 (Directives) 是带有 v- 前缀的特殊 attribute。
+        指令 attribute 的值预期是单个 JavaScript 表达式 (v-for 是例外情况);
+            v-bind 缩写 ==> :
+            v-on 缩写 ==> @
+    -->
+
+	<div id="root1">
+		<h1>hello,插值语法，{{name}}，{{age}}，{{Date.now()}}</h1>
+
+		<h1>指令语法</h1>
+		<a v-bind:href="url">点击跳转</a>
+		<br />
+		<a :href="url">缩写形式</a>
+
+	</div>
+
+
+	<!--     <h1>{{name}}</h1>  无法读取到数据，因为不是Vue实例指定的容器 
+
+    <div id="root2">
+        <h1>hello,{{name}}，{{age}}</h1>
+    </div>
+    -->
+
+
+
+	<script>
+		Vue.config.productionTip = false; //设置为 false 以阻止 vue 在启动时生成生产提示。
+
+		// 创建一个Vue容器
+		new Vue({
+			el: '#root1', //el用于指定当前Vue实例为哪个容器服务，通常为CSS选择器字符，也可以是一个 HTMLElement (DOM实例)实例。
+			data: { //data里面的数据提供给el指定的容器去使用
+				name: 'Vue',
+				age: '18',
+				url: 'http://www.baidu.com'
+			}
+		})
+
+/* 		new Vue({
+			el: '#root2', //el用于指定当前Vue实例为哪个容器服务，通常为CSS选择器字符，也可以是一个 HTMLElement (DOM实例)实例。
+			data: { //data里面的数据提供给el指定的容器去使用
+				name: 'Vue2',
+				age: '12'
+			}
+		})  */
+	</script>
+
+
+</body>
+
+</html>

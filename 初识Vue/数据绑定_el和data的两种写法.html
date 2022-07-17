@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue数据绑定</title>
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+</head>
+
+<body>
+  <!-- 准备容器 -->
+
+  <!-- <div id="demo">
+        单向数据绑定<input type="text" v-bind:value="value"><br />
+        双向数据绑定<input type="text" v-model:value="value">
+    </div> -->
+
+  <!-- 简写方式 -->
+  <div id="demo">
+    单向数据绑定<input type="text" :value="value"><br />
+    双向数据绑定<input type="text" v-model="value">
+
+    <!-- 错误写法,报错：Error compiling template:
+                <h2 v-model="value">: v-model is not supported on this element type. 
+            v-model只能应用在表单类元素（输入类元素）上 -->
+    <!-- <h2 v-model:x="value">错误写法</h2> -->
+  </div>
+
+
+  <script type="text/javascript">
+    Vue.config.productionTip = false; //设置为 false 以阻止 vue 在启动时生成生产提示。
+
+    // 创建一个Vue容器
+    const vm = new Vue({
+      //el的两种写法，两种写法仍选其一
+      /* el: '#demo', //el第一种写法 */
+
+      //data的两种写法
+      /* data: { //对象式
+        value: 'Vue'
+      } */
+      data () { //函数式，以后用组件化编程，必须使用函数式
+        console.log(this);  //此处的this是vue实例，所以不能用箭头函数
+        return {
+          value: 'Vue'
+        };
+      }
+    });
+
+    vm.$mount('#demo');//el第二种写法，使用Vue实例的原型中的方法$mount来指定el的值
+
+  </script>
+</body>
+
+</html>
