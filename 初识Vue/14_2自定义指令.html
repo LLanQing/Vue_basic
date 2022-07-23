@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自定义指令</title>
+  </title>
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+</head>
+
+<body>
+  <!--
+  需求1：定义一个v-big指令，和v-text功能类似，但会把绑定的数值放大10倍。
+  需求2：定义一个v-fbind指令，和v-bind功能类似，但可以让其所绑定的input元素默认获取焦点。
+  自定义指令总结：
+		一、定义语法：
+      (1).局部指令：
+        new Vue({directives:{指令名:配置对象} })   或  new Vue({directives: {指令名:回调函数}})
+      (2).全局指令：
+        Vue.directive(指令名,配置对象) 或  Vue.directive(指令名,回调函数)
+    二、配置对象中常用的3个回调：
+      (1).bind：指令与元素成功绑定时调用。
+      (2).inserted：指令所在元素被插入页面时调用。
+      (3).update：指令所在模板结构被重新解析时调用。
+    三、备注：
+      1.指令定义时不加v-，但使用时要加v-；
+      2.指令名如果是多个单词，要使用kebab-case命名方式，不要用camelCase命名。
+-->
+  <!-- 准备容器 -->
+  <div id="root">
+    <h1>v-big指令:和v-text功能类似，但会把绑定的数值放大10倍。</h1>
+    <h3>number当前值：<span v-text="number"></span></h3>
+    <h3>number放大10倍后的值：<span v-big="number"></span></h3>
+    <h3>number放大10倍后的值：<span v-big-name="number"></span></h3>
+    <button @click="number++">点击number+1</button>
+    <h2>{{name}}</h2>
+
+    <hr>
+    <input type="text" v-fbind:value="number"><br />
+  </div>
+
+
+</body>
+
+<script type='text/javascript'>
+  Vue.config.productionTip = false; //设置为 false 以阻止 vue 在启动时生成生产提示。
+
+  // 创建全局的自定义指令
+  /*   //函数式写法
+    Vue.directive('big', (element, binding) => { //element：当前指令所在的dom元素 。binding绑定对象，关注该绑定对象中的value属性
+      // console.log(element, binding);
+      console.log('big被调用了', this);  //directives里面函数的this都是指向window
+      element.innerText = binding.value * 10;
+    });
+   */
+  //对象式写法
+  Vue.directive('fbind', {
+    // (1)bind：指令与元素成功绑定时调用。
+    bind (element, binding) {
+      console.log('bind被调用了');
+      element.value = binding.value;
+    },
+
+    // (2)inserted：指令所在元素被插入页面时调用。
+    inserted (element, binding) {
+      console.log('inserted被调用了');
+      element.focus();
+    },
+
+    // (3)update：指令所在模板结构被重新解析时调用。
+    update (element, binding) {
+      console.log('update被调用了');
+      element.value = binding.value;
+    }
+  });
+
+  // 创建一个Vue实例
+  new Vue({
+    el: '#root',
+    data: {
+      name: 'Vue',
+      number: 1
+    },
+    //定义指令的配置项: directives，局部的指令，只能在当前vm绑定的根元素中使用
+    directives: {
+      //两种写法:1.对象(key-value) 2.函数
+      /*  big函数的调用时机:
+            1.指令与元素成功绑定 (但注意此时dom元素还没有成功的被弄到页面上去)时会被调用 (在Vue解析模板生成真实dom之前)
+            2.指令所在的模版被重新解析时会被再次调用 */
+      // 自定义v-big指令
+      big (element, binding) { //element：当前指令所在的dom元素 。binding绑定对象，关注该绑定对象中的value属性
+        // console.log(element, binding);
+        console.log('big被调用了', this);  //directives里面函数的this都是指向window
+        element.innerText = binding.value * 10;
+      },
+
+      //如果指令名比较长，有多个单词组成，不能写成驼峰命名，只能用'-'连接单词
+      'big-name' (element, binding) { //element：当前指令所在的dom元素 。binding绑定对象，关注该绑定对象中的value属性
+        // console.log(element, binding);
+        console.log('big-name被调用了');
+        element.innerText = binding.value * 10;
+      },
+
+
+      /*       //自定义v-fbind指令
+            // 函数式写法无法满足focus需要在模板插入到dom中生效这个条件
+            fbind (element, binding) {
+              element.value = binding.value;
+              //指令与元素成功绑定 (但注意此时dom元素还没有成功的被弄到页面上去)时会被调用 (在Vue解析模板生成真实dom之前)
+              //focus()必须在元素已经添加到真实dom树中才能生效
+              element.focus();
+            } */
+
+      /*       // 对象式写法
+            //换成对象写法 对比函数简写方式其实只是多了 inserted钩子
+            fbind: {
+              // (1)bind：指令与元素成功绑定时调用。
+              bind (element, binding) {
+                console.log('bind被调用了');
+                element.value = binding.value;
+              },
+      
+              // (2)inserted：指令所在元素被插入页面时调用。
+              inserted (element, binding) {
+                console.log('inserted被调用了');
+                element.focus();
+              },
+      
+              // (3)update：指令所在模板结构被重新解析时调用。
+              update (element, binding) {
+                console.log('update被调用了');
+                element.value = binding.value;
+              }
+            } */
+    }
+  })
+
+</script>
+
+</html>

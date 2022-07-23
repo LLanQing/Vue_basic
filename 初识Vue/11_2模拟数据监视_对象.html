@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>模拟数据监视_对象</title>
+  </title>
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+</head>
+
+<body>
+  <!-- 准备容器 -->
+  <div id="demo">
+
+    <h2>人员列表</h2>
+    <button @click="update">点击改变第一个人的信息</button>
+    <ul>
+      <li v-for="p in persons" :key="p.id">{{p.name}}--{{p.age}}</li>
+    </ul>
+
+  </div>
+
+
+  <script type='text/javascript'>
+
+    //准备一个被监视的数据对象
+    let data = {
+      name: 'Vue',
+      age: 20,
+    }
+
+    //监视构造函数，用来加工被监视的数据对象
+    //Vue里面的Observer是一个递归函数可以给多层属性加工
+    function Observer (data) {
+      //汇总对象中所有属性成一个数组
+      const keys = Object.keys(data)
+      //遍历数组
+      keys.forEach((k) => {
+        //给每个属性做数据代理
+        Object.defineProperty(this, k, {
+          enumerable: true,
+          get () {
+            return data[k]
+          },
+          set (newVal) {
+            //Vue里面这里还有通知Vue去重新解析模板的方法，这里就简化一个输出
+            console.log(`${k}被修改了，重新解析模板，生成虚拟dom，diff算法对比新旧虚拟dom，生成真实dom`);
+            data[k] = newVal
+          }
+        })
+      })
+    }
+
+    //创建一个监视实例对象，用于监视data里面的数据变化
+    const obs = new Observer(data)
+
+    //Vue构造函数
+
+
+    //创建一个Vue实例
+    let vm = {}
+    vm._data = data = obs
+
+    //然后在进行数据代理，将vm._data上面的属性代理到vm上
+    //汇总对象中所有属性成一个数组
+    const vmKeys = Object.keys(vm._data)
+    //遍历数组
+    vmKeys.forEach((k) => {
+      //给每个属性做数据代理
+      Object.defineProperty(vm, k, {
+        get () {
+          return vm._data[k]
+        },
+        set (newVal) {
+          //Vue里面这里还有通知Vue去重新解析模板的方法，这里就简化一个输出
+          console.log(`${k}被修改了，重新解析模板，生成虚拟dom，diff算法对比新旧虚拟dom，生成真实dom`);
+          vm._data[k] = newVal
+        }
+      })
+    })
+
+
+    Vue.config.productionTip = false; //设置为 false 以阻止 vue 在启动时生成生产提示。
+
+  </script>
+
+</body>
+
+</html>

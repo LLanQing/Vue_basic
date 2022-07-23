@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>原生js操作dom</title>
+  </title>
+  <style>
+    .inputBackGround {
+      background-Color: pink;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="btn">点击创建一个输入框</button>
+
+</body>
+
+<script type='text/javascript'>
+  const btn = document.getElementById('btn')
+  btn.onclick = () => {
+    const input = document.createElement('input')
+
+    //给input添加样式
+    input.className = 'inputBackGround'
+    //给input添加value值
+    input.value = 20
+    //给input添加点击相应事件
+    input.onclick = () => {
+      console.log(input.value)
+    }
+    //input还没有添加到dom中，所以没有父元素
+    console.log(input.parentElement)
+
+    document.body.appendChild(input)
+
+    //input出现时自动获取焦点,这个必须写在document.body.appendChild(input)之后才生效
+    input.focus()
+    //给input的父元素添加背景色
+    input.parentElement.style.backgroundColor = 'skyblue'
+  }
+</script>
+
+</html>

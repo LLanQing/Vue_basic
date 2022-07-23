@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>条件渲染</title>
+  </title>
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+</head>
+
+<body>
+  <!-- 
+    1.v-if 指令用于条件性地渲染一块内容。这块内容只会在指令的表达式返回 truthy 值的时候被渲染。
+    2.因为 v-if 是一个指令，所以必须将它添加到一个元素上。但是如果想切换多个元素呢？
+      此时可以把一个 <template> 元素当做不可见的包裹元素，并在上面使用 v-if。
+      最终的渲染结果将不包含 <template> 元素。
+    3.可以使用 v-else 指令来表示 v-if 的“else 块”，
+      v-else ，v-else-if元素必须紧跟在带 v-if 或者 v-else-if 的元素的后面，否则它将不会被识别。
+    4.v-if 与 v-show比较：
+        v-if 是“真正”的条件渲染，因为它会确保在切换过程中条件块内的事件监听器和子组件适当地被销毁和重建。
+        
+        v-if 也是惰性的：如果在初始渲染时条件为假，则什么也不做——直到条件第一次变为真时，才会开始渲染条件块。
+        
+        相比之下，v-show 就简单得多——不管初始条件是什么，元素总是会被渲染，并且只是简单地基于 CSS 进行切换。
+        
+        一般来说，v-if 有更高的切换开销，而 v-show 有更高的初始渲染开销。因此，如果需要非常频繁地切换，则使用 v-show 较好；如果在运行时条件很少改变，则使用 v-if 较好。
+   -->
+  <!-- 准备容器 -->
+  <div id="demo">
+    <!-- v-show使用css样式的display:none实现隐藏 -->
+    <h2 v-show="!'JS表达式为真则显示，否则不显示'">{{name}}</h2>
+
+    <!-- v-if -->
+    <button @click="n++">点击n+1</button>
+    <div v-if="n===1">angular</div>
+    <div v-if="n===2">react</div>
+    <!-- <div>v-else ，v-else-if元素必须紧跟在带 v-if 或者 v-else-if 的元素的后面，否则它将不会被识别。且会报错</div> -->
+    <div v-else-if="n===3">Vue</div>
+    <div v-else>nodeJS</div>
+
+    <!-- 在 <template> 元素上使用 v-if 条件渲染分组 -->
+    <template v-if="true">
+      <div>HTML</div>
+      <div>CSS</div>
+      <div>JavaScript</div>
+    </template>
+  </div>
+
+  <script type='text/javascript'>
+    Vue.config.productionTip = false; //设置为 false 以阻止 vue 在启动时生成生产提示。
+
+    // 创建一个Vue实例
+    const vm = new Vue({
+      el: '#demo',
+      data: {
+        name: 'Vue',
+        age: 20,
+        n: 0
+      },
+
+
+    })
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>列表过滤与列表排序</title>
+  </title>
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+</head>
+
+<body>
+  <!-- 准备容器 -->
+  <div id="demo">
+
+    <h2>人员列表</h2>
+    <input type="text" placeholder="请输入姓名" v-model="keywords" />
+    <button @click="sortType = 1">升序排列</button>
+    <button @click="sortType = 2">降序排列</button>
+    <button @click="sortType = 0 ">原顺序</button>
+    <ul>
+      <li v-for="p in filterPersons" :key="p.id">
+        {{p.name}}--{{p.age}}--{{p.gender}}
+      </li>
+    </ul>
+
+  </div>
+
+
+  <script type='text/javascript'>
+    Vue.config.productionTip = false//设置为 false 以阻止 vue 在启动时生成生产提示。
+
+    // 创建一个Vue实例
+    new Vue({
+      el: '#demo',
+      data: {
+        keywords: '',
+        sortType: 0, //0表示原顺序，1升序，2降序
+        persons: [
+          { id: '001', name: '马冬梅', age: 30, gender: '女' },
+          { id: '002', name: '周冬雨', age: 24, gender: '女' },
+          { id: '003', name: '周杰伦', age: 40, gender: '男' },
+          { id: '004', name: '温兆伦', age: 35, gender: '男' },
+        ],
+        // filterPersons: []
+      },
+      /*       //watch实现列表过滤
+            watch: {
+              keywords: {
+                //初始化时调用一次，进入页面可以看到列表
+                immediate: true,
+                handler (newVal) {
+                  this.filterPersons = this.persons.filter((p) => {
+                    return p.name.indexOf(newVal) !== -1
+                  })
+                }
+              }
+            }, */
+
+      /*       //computed实现列表过滤
+            computed: {
+              filterPersons () {
+                return this.persons.filter((p) => {
+                  return p.name.indexOf(this.keywords) !== -1
+                })
+              }
+            }, */
+      //computed实现列表过滤和按照年龄排序
+      computed: {
+        filterPersons () {
+          //先过滤
+          const arr = this.persons.filter(p => p.name.indexOf(this.keywords) !== -1)
+          //将过滤后的结果排序，如果是原顺序就不需要排序
+          if (this.sortType)
+          {
+            return this.sortType === 1 ? arr.sort((a, b) => a.age - b.age) : arr.sort((a, b) => b.age - a.age)
+          }
+          //返回排序后的结果
+          return arr
+        }
+      },
+    })
+
+    /*     //字符串的indexOf方法，在搜索空字符串的时候，会返回0
+        console.log(vm.persons[0].name.indexOf(''));
+     */
+  </script>
+
+</body>
+
+</html>

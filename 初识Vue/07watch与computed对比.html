@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>watch与computed对比</title>
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+</head>
+
+<body>
+  <!-- watch与computed区别：
+      1.computed能完成的任务，watch都能完成，
+      2.watch都能完成的任务，computed不一定能完成，例如watch开启异步任务；
+    注意事项：
+      1.所有被Vue管理的函数都不能写成箭头函数，这样this就是指向Vue的实例对象；
+      2.所有不被Vue管理的函数（定时器的回调函数，ajax的回调函数，promise的回调函数等异步任务），最好写成箭头函数，
+        这样this的指向才是vm或者组件实例对象
+
+-->
+
+  <!-- 准备容器 -->
+  <div id="demo">
+    <h2>使用监视属性实现</h2>
+    <input type="text" v-model="firstName"><br /><br />
+    <input type="text" v-model="lastName"><br /><br />
+    姓名：<span>{{fullName}}</span><br /><br />
+  </div>
+
+  <script type='text/javascript'>
+    Vue.config.productionTip = false; //设置为 false 以阻止 vue 在启动时生成生产提示。
+
+    // 创建一个Vue实例
+    const vm = new Vue({
+      el: '#demo',
+      data: {
+        firstName: '张',
+        lastName: '三',
+        fullName: '张-三'
+      },
+
+      watch: {
+        firstName (val) {
+          setTimeout(() => {
+            //箭头函数没有this，向外找作用域的this，所以this指向vm
+            this.fullName = val + '-' + this.lastName
+          }, 1000);
+        },
+        lastName (val) {
+          this.fullName = this.firstName + '-' + val
+        }
+      }
+    })
+
+  </script>
+
+</body>
+
+</html>

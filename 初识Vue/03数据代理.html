@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据代理</title>
+  <!-- 数据代理是通过Object.defineProperty()来实现的，
+       通过对象的描述属性getter,setter -->
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+</head>
+
+<body>
+  <!-- 准备容器 -->
+  <div id="demo"></div>
+
+  <script type='text/javascript'>
+    Vue.config.productionTip = false; //设置为 false 以阻止 vue 在启动时生成生产提示。
+
+    // 创建一个Vue实例
+    const vm = new Vue({
+      el: '#demo',
+      data: { //data中所有的数据都会通过数据代理成为Vue实例的属性
+        name: 'Vue',
+        age: 20
+      }
+    })
+
+
+    console.log(vm._data.name === vm.name); //true
+    console.log(vm._data.age === vm.age);   //true
+
+    /*     //数据代理实现原理
+        Object.defineProperties(vm,{
+          'name':{
+            get(){
+              return this._data.name
+            },
+            set(value){
+              this._data.name = value
+            }
+          },
+          'age':{
+            get () {
+              return this._data.age
+            },
+            set (value) {
+              this._data.age = value
+            }
+          }
+        }) */
+
+  </script>
+
+</body>
+
+</html>

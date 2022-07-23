@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>绑定class-style样式</title>
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+  <style>
+    .basic {
+      width: 200px;
+      height: 200px;
+      border: 5px solid black;
+    }
+
+    .happy {
+      background-color: rgba(236, 13, 91, 0.944);
+    }
+
+    .sad {
+      background-color: rgba(139, 136, 119, 0.932);
+      border-color: green;
+    }
+
+    .nomal {
+      background-color: blue;
+    }
+
+    .vue1 {
+      padding: 50px;
+      font-size: 20px;
+      font-style: italic;
+    }
+
+    .vue2 {
+      border-radius: 25%;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 
+    操作元素的 class 列表和内联样式是数据绑定的一个常见需求。因为它们都是 attribute，
+    所以我们可以用 v-bind 处理它们：只需要通过表达式计算出字符串结果即可。
+    不过，字符串拼接麻烦且易错。因此，在将 v-bind 用于 class 和 style 时，
+    Vue.js 做了专门的增强。表达式结果的类型除了字符串之外，还可以是对象或数组。
+   -->
+  <!-- 准备容器 -->
+  <div id="demo">
+    <!-- 绑定class，字符串语法。适用于样式的类名不确定，需要动态指定-->
+    <div class="basic" :class="className" @click="changeClass">字符串语</div><br />
+
+    <!-- 绑定class，对象语法。适用于样式的个数确定，类名确定，使用状态不确定-->
+    <div class="basic" :class="classObject">对象语法</div><br />
+
+    <!-- 绑定class，数组语法。适用于样式的个数不确定,类名也不确定，需要动态指定-->
+    <div class="basic" :class="classArray" @click="changeClassArray">数组语法</div><br />
+
+    <!-- 绑定内联style，对象写法 -->
+    <div class="basic" :style="styleObj">内联样式绑定</div><br />
+    <!-- 绑定内联style，数组写法 -->
+    <div class="basic" :style="[styleObj1,styleObj2]">内联样式绑定</div>
+  </div>
+
+  <script type='text/javascript'>
+    Vue.config.productionTip = false; //设置为 false 以阻止 vue 在启动时生成生产提示。
+
+    // 创建一个Vue实例
+    const vm = new Vue({
+      el: '#demo',
+      data: {
+        className: 'nomal',
+        classArray: ['happy', 'sad', 'vue1', 'vue2'],
+        classObject: {
+          vue1: false,
+          vue2: false
+        },
+        styleObj1: {
+          color: 'pink',
+          //注意，css里面的样式属性名称，如果是以'-'连接的，如font-size,backgroud-color，在JS里面都必须用驼峰命名法
+          fontSize: '40px',
+        },
+        styleObj2: {
+          backgroundColor: 'blue'
+        }
+      },
+
+      methods: {
+        changeClass () {
+          this.className = this.classArray[Math.floor(Math.random(0, 1) * 4)];
+        },
+
+        changeClassArray () {
+          if (this.classArray.length > 0)
+          {
+            this.classArray.pop();
+          }
+        }
+      },
+    })
+
+  </script>
+
+</body>
+
+</html>

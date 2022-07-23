@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>计算属性</title>
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+</head>
+
+<body>
+  <!-- 准备容器 -->
+  <div id="demo">
+    <!-- <h2>使用插值语法实现</h2>
+    <input type="text" v-model="firstName"><br /><br />
+    <input type="text" v-model="lastName"><br /><br />
+    姓名：<span>{{firstName}}--{{lastName}}</span> -->
+
+    <!-- <h2>使用methods实现</h2>
+    <input type="text" v-model="firstName"><br /><br />
+    <input type="text" v-model="lastName"><br /><br />
+    姓名：<span>{{getFullName()}}</span> -->
+
+    <h2>使用计算属性实现</h2>
+    <input type="text" v-model="firstName"><br /><br />
+    <input type="text" v-model="lastName"><br /><br />
+    <!-- 计算属性是基于它所依赖的Vue属性进行缓存的。只在依赖的属性发生改变时它们才会重新求值。
+      这就意味着只要 firstName/lastName 还没有发生改变，多次访问 fullName 计算属性会立即返回之前的计算结果，而不必再次执行函数。 -->
+    姓名：<span>{{fullName}}</span><br /><br />
+    姓名：<span>{{fullName}}</span><br /><br />
+    姓名：<span>{{fullName}}</span><br /><br />
+  </div>
+
+  <script type='text/javascript'>
+    Vue.config.productionTip = false; //设置为 false 以阻止 vue 在启动时生成生产提示。
+
+    // 创建一个Vue实例
+    const vm = new Vue({
+      el: '#demo',
+      data: {
+        firstName: '张',
+        lastName: '三'
+      },
+
+      /*       methods: {
+              getFullName () {
+                console.log('getFullName被调用了');
+                return this.firstName.slice(0, 3) + '-' + this.lastName.slice(0, 3)
+              }
+            }, */
+
+      computed: {
+        fullName: {
+          //当fullName被读取时，就会调用get，get的返回值作为fullName的值，
+          //底层借助了Object.defineProperty方法提供的getter和setter
+          get () {
+            console.log('get被调用了');
+            return this.firstName.slice(0, 3) + '-' + this.lastName.slice(0, 3);
+          },
+          set (value) {
+            console.log('set被调用了');
+            nameArray = value.split('-');
+            this.firstName = nameArray[0];
+            this.lastName = nameArray[1];
+          }
+        }
+
+        /* //简写形式，当计算属性只用于读取，不修改时，即只有getter，可以简写
+        fullName () {
+          console.log('get被调用了');
+          return this.firstName.slice(0, 3) + '-' + this.lastName.slice(0, 3);
+        } */
+      },
+    })
+
+  </script>
+
+</body>
+
+</html>

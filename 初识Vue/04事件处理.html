@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>事件处理</title>
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+</head>
+
+<!-- 1.可以用 v-on 指令监听 DOM 事件，并在触发时运行一些 JavaScript 代码。
+     2.事件处理逻辑复杂直接把 JavaScript 代码写在 v-on 指令中是不可行的。
+        因此 v-on 还可以接收一个需要调用的方法名称。-->
+
+<body>
+  <!-- 准备容器 -->
+  <div id="demo">
+    <!-- <h2>1.事件绑定v-on或@</h2>
+      <h3 v-on:click="count++">直接执行js代码{{count}}</h3>
+
+    <h3 v-on:click="add">调用方法{{count}}</h3>
+    <h3 @click="add">使用@简写方式绑定事件{{count}}</h3>
+
+    <h3>也可以在调用方法时候传入一些参数{{result}}</h3>
+    <button v-on:click="sum(10,20)">点击求和</button>
+
+    调用函数不传参，默认参数是dom事件event，传入参数后event被覆盖。可以用特殊变量 $event 把它传入方法
+    <h3>用特殊变量 $event 把dom事件传入传入方法</h3>
+    <button v-on:click="showEvent($event,20)">点我一下获取event</button> -->
+
+    <h2 @click.capture.self="showEvent($event,'h2')">
+      <!--2.事件修饰符
+      .stop：阻止事件冒泡 =>event.stopPropagation()
+      .prevent：阻止事件默认行为 =>event.preventDefault()
+      .capture：使用事件捕获模式，事件先从外往里捕获，然后在从里往外冒泡，捕获模式就是在捕获阶段执行事件处理
+      .self：只当在 event.target 是当前元素自身时触发处理函数
+      .once：事件将只会触发一次
+      .passive：滚动事件的默认行为 (即滚动行为) 将会立即触发 -->
+      <a href.stopprevent="http://www.baidu.com">阻止a标签地址默认跳转行为</a><br />
+      <button @click.stop="showEvent($event,'btn1')">点击事件，阻止事件冒泡</button><br />
+      <button @click.once="showEvent($event,'btn2')">只触发一次</button>
+    </h2>
+
+    <h2>
+      <!-- 3.按键修饰符
+      .enter
+      .tab(特殊，必须配合keydown事件监听去使用)
+      .delete (捕获“删除”和“退格”键)
+      .esc
+      .space
+      .up
+      .down
+      .left
+      .right -->
+
+      <input type="text" @keydown.tab="showEvent($event,val)" v-model="val">
+    </h2>
+
+    <h2>
+      <!-- 4.系统按键修饰符,如下修饰符来实现仅在按下相应按键时才触发鼠标或键盘事件的监听器
+      .ctrl
+      .alt
+      .shift
+      .meta -->
+      <input type="text" @keyup.ctrl.s="showEvent($event,val)" v-model="val">
+    </h2>
+
+  </div>
+
+  <script type='text/javascript'>
+    Vue.config.productionTip = false; //设置为 false 以阻止 vue 在启动时生成生产提示。
+
+    // 创建一个Vue实例
+    const vm = new Vue({
+      el: '#demo',
+      data: {
+        count: 0,
+        name: 'Vue',
+        age: 20,
+        result: 0,
+        val: ''
+      },
+      //// 在 `methods` 对象中定义方法
+      methods: {
+        /*         add (event) {
+                  // `this` 在方法里指向当前 Vue 实例
+                  this.count++;
+                  console.log(this);
+                  // 调用函数不传参，默认参数是dom事件event,`event` 是原生 DOM 事件
+                  console.log(event); //PointerEvent
+                  console.log(event.target.tagName);  //H2
+                },
+        
+                sum (x, y) {
+                  this.result = x + y;
+                },*/
+
+        showEvent (event, domName) {
+          alert(event.target.tagName + '-' + domName);
+        }
+
+      },
+
+
+    });
+
+  </script>
+
+</body>
+
+</html>
