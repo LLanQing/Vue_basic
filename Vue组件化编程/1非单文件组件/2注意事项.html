@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>非单文件组件_注意事项</title>
+  </title>
+  </title>
+  <!-- 引入Vue -->
+  <script src="../../js/vue.js"></script>
+</head>
+
+<body>
+  <!--
+			几个注意点：
+					1.关于组件名:
+								一个单词组成：
+											第一种写法(首字母小写)：school
+											第二种写法(首字母大写)：School
+								多个单词组成：
+											第一种写法(kebab-case命名)：my-school
+											第二种写法(CamelCase命名)：MySchool (需要Vue脚手架支持)
+								备注：
+										(1).组件名尽可能回避HTML中已有的元素名称，例如：h2、H2都不行。
+										(2).可以使用name配置项指定组件在开发者工具中呈现的名字。
+
+					2.关于组件标签:
+								第一种写法：<school></school>
+								第二种写法：<school/>
+								备注：不用使用脚手架时，<school/>会导致后续组件不能渲染。
+
+					3.一个简写方式：
+								const school = Vue.extend(options) 可简写为：const school = options
+-->
+  <!-- 准备容器 -->
+  <div id="root">
+    <h2>{{msg}}</h2>
+    <hr>
+    <!-- 第三步使用组件(写组件标签) -->
+    <school></school>
+    <school />
+    <!-- 不用使用脚手架时，<school/>会导致后续组件不能渲染。 -->
+    <!--     <school />
+    <school /> -->
+
+  </div>
+
+</body>
+<script type='text/javascript'>
+  Vue.config.productionTip = false; //设置为 false 以阻止 vue 在启动时生成生产提示。
+
+  /*   Vue.extend(options)
+      参数：
+      { Object } options
+      用法：使用基础 Vue 构造器，创建一个“子类”。参数是一个包含组件选项的对象。data 选项是特例，需要注意 - 在 Vue.extend() 中它必须是函数
+     */
+
+  // 第一步创建school组件
+  /*   const school = Vue.extend({
+      // el:'#root' //定义组件一定不能配置el，因为最终所有组件都被vm管理，由vm决定组件服务哪个模板
+      //data必须写成函数式，避免组件被复用时，数据存在引用关系。
+      data () {
+        return {
+          schoolName: 'Vue学院',
+          address: '武汉'
+        }
+      },
+      // 配置模板
+      template: `
+            <div>
+              <h2>学校名称：{{schoolName}}</h2>
+              <h2>学校地址：{{address}}</h2>
+              <button @click="showName">点击显示学校名称</button>
+            </div>
+          `,
+      methods: {
+        showName () {
+          alert(this.schoolName);
+        }
+      },
+      //配置在开发者工具里面显示的组件名，一般是第三方插件或者大型项目用来区分组件使用
+      name: 'xuexiao'
+    });*/
+
+  // 简写方式
+  const school = {
+    // el:'#root' //定义组件一定不能配置el，因为最终所有组件都被vm管理，由vm决定组件服务哪个模板
+    //data必须写成函数式，避免组件被复用时，数据存在引用关系。
+    data () {
+      return {
+        schoolName: 'Vue学院',
+        address: '武汉'
+      }
+    },
+    // 配置模板
+    template: `
+            <div>
+              <h2>学校名称：{{schoolName}}</h2>
+              <h2>学校地址：{{address}}</h2>
+              <button @click="showName">点击显示学校名称</button>
+            </div>
+          `,
+    methods: {
+      showName () {
+        alert(this.schoolName);
+      }
+    },
+    //配置在开发者工具里面显示的组件名，一般是第三方插件或者大型项目用来区分组件使用
+    name: 'xuexiao'
+  };
+
+  // 创建一个Vue实例
+  new Vue({
+    el: '#root',
+    //第二步注册组件(局部注册)
+    components: {
+      /*         // 最好是注册的组件名和创建的逐渐变量名一致，这样可以使用对象的简写方式
+              xuexiao:school,
+              xuesheng:student */
+      school,
+    },
+    data: {
+      msg: 'Vue组件化编程'
+    }
+  });
+
+</script>
+
+</html>

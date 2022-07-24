@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>分析生命周期</title>
+  </title>
+  </title>
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+</head>
+
+<body>
+  <!--
+    生命周期：
+      1.又名：生命周期回调函数、生命周期函数、生命周期钩子。
+      2.是什么：Vue在关键时刻帮我们调用的一些特殊名称的函数。
+      3.生命周期函数的名字不可更改，但函数的具体内容是程序员根据需求编写的。
+      4.生命周期函数中的this指向是vm 或 组件实例对象。
+      5.按照执行顺序，生命周期函数有：beforecreated、created、beforemounted、mounted、beforeupdated、updated、beforedestroyed、destroyed
+-->
+  <!-- 准备容器,如果vm里面配置了template,那么会先解析tempalte，容器会被tempalte覆盖 -->
+  <div id="root">
+    <div :style="{opacity}">学习Vue</div>
+    <div>n的值：{{n}}</div>
+    <button @click="add">点击n+1</button><br>
+    <button @click="vmDestroy">点击销毁vm</button>
+  </div>
+
+  <img src="../images/生命周期.png" alt="">
+
+
+  <script type='text/javascript'>
+    Vue.config.productionTip = false; //设置为 false 以阻止 vue 在启动时生成生产提示。
+
+    // 创建一个Vue实例
+    const vm = new Vue({
+      el: '#root', //el没有的话，生命周期执行到created不在执行了，除非调用了vm.$mount(el)
+      /*       //template模版字符串只能有一个根结点
+            //注意<template>是不能作为根标签来使用的，不能去骗vue，可以用<fragment>(vue3新加，模仿react)
+            template: `
+                <div>
+                  <div :style="{opacity}">学习Vue</div>
+                  <div>n的值：{{n}}</div>
+                  <button @click="add">点击n+1</button>
+                </div>
+            `, */
+      data: {
+        opacity: 0.5,
+        n: 1
+      },
+      methods: {
+        add () {
+          console.log('add被调用了');
+          this.n++
+        },
+        vmDestroy () {
+          console.log('vmDestroy被调用了');
+          this.$destroy(); //完全销毁一个实例。清理它与其它组件实例的连接，解绑它的全部指令及自定义事件监听器。触发 beforeDestroy 和 destroyed 的钩子。
+        }
+      },
+      watch: {
+        n () {
+          console.log('n被更改了')
+        }
+      },
+
+      // 数据代理还未开始，无法通过vm访问到data中的数据或者methods里面的方法
+      beforeCreate () {
+        console.log('beforeCreate被调用了', this, this.n, this.add);
+      },
+      created () {
+        console.log('created被调用了', this, this.n, this.add);
+      },
+
+      beforeMount () {
+        console.log('beforeMount被调用了');
+      },
+      // Vue初始完成模板解析并把真实的dom放入页面后调用mounted（只有第一次才调用）
+      mounted () {
+        console.log('mounted被调用了', this.$el); //this指向Vue实例,vm.$el存着真实的dom模板，以便在dom修改时可以复用
+        // setInterval(() => {
+        //   this.opacity -= 0.01
+        //   if (this.opacity <= 0)
+        //   {
+        //     this.opacity = 1
+        //   }
+        // }, 16);
+      },
+      // 数据是新的但是还没渲染到页面上
+      beforeUpdate () {
+        console.log('beforeUpdate被调用了', this.n);
+      },
+      //此时新数据已经渲染到页面上
+      updated () {
+        console.log('updated被调用了');
+      },
+
+      // 当调用了vm.$destroy()，下面两个生命周期才会执行
+      beforeDestroy () {
+        //仍然可以使用data,methods，关闭定时器，取消订阅消息，解绑自定义事件等收尾工作，移除watchers
+        console.log('beforeDestroy被调用了');
+        console.log(this.n);
+        this.add();  ////记住一旦到了beforeDestroy钩子，即使你拿到数据想要更新它也不会走更新的路了(beforeUpdate,updated)
+      },
+      destroyed () {  //destroyed钩子几乎不用
+        console.log('destroyed被调用了');
+      },
+    });
+
+    /*     // 利用定时器实现循环透明度变化
+        setInterval(() => {
+          vm.opacity -= 0.01
+          if (vm.opacity <= 0)
+          {
+            vm.opacity = 1
+          }
+        }, 16); */
+
+    /*     //创建Vue实例时没有添加el，在外部调用vm.$mount(el),然后生命周期会接着created后面继续执行
+        console.log('vm.$mount(el)被调用了');
+        vm.$mount('#root'); */
+  </script>
+
+</body>
+
+</html>

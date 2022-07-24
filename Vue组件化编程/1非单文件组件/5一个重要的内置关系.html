@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>非单文件组件_一个重要的内置关系</title>
+  </title>
+  </title>
+  <!-- 引入Vue -->
+  <script src="../../js/vue.js"></script>
+</head>
+
+<body>
+  <!--
+ 			1.一个重要的内置关系：VueComponent.prototype.__proto__ === Vue.prototype，
+        即 VueComponent.prototype = new Vue()
+			2.为什么要有这个关系：让组件实例对象（vc）可以访问到 Vue原型上的属性、方法。
+-->
+  <!-- 准备容器 -->
+  <div id="root">
+    <h2>{{msg}}</h2>
+    <hr>
+    <!-- 第三步使用组件(写组件标签)，也可以将组件标签写到vm的template中，这样模板就很干净 -->
+    <school></school>
+
+  </div>
+
+  <img src="../../images/Vue和VueComponent之间内置关系分析图.png" width="1500px" height="1024px">
+
+</body>
+<script type='text/javascript'>
+  Vue.config.productionTip = false; //设置为 false 以阻止 vue 在启动时生成生产提示。
+
+  Vue.prototype.test = '验证VueComponent实例对象访问到Vue的原型对象的属性'
+
+  // 第一步创建school组件
+  const school = Vue.extend({
+    // el:'#root' //定义组件一定不能配置el，因为最终所有组件都被vm管理，由vm决定组件服务哪个模板
+    //data必须写成函数式，避免组件被复用时，数据存在引用关系。
+    data () {
+      return {
+        schoolName: 'Vue学院',
+        address: '武汉'
+      }
+    },
+    // 配置模板
+    template: `
+            <div>
+              <h2>学校名称：{{schoolName}}</h2>
+              <h2>学校地址：{{address}}</h2>
+              <button @click="showName">点击显示学校名称</button>
+            </div>
+          `,
+    methods: {
+      showName () {
+        alert(this.schoolName);
+        console.log(this.test);  //this是【VueComponent实例对象】
+      }
+    },
+    //配置在开发者工具里面显示的组件名，一般是第三方插件或者大型项目用来区分组件使用
+    name: 'xuexiao',
+  });
+
+
+
+  // 创建一个Vue实例
+  const vm = new Vue({
+    el: '#root',
+    //第二步注册组件(局部注册)
+    components: { school },
+    data: {
+      msg: 'Vue组件化编程'
+    },
+  });
+
+
+</script>
+
+</html>
