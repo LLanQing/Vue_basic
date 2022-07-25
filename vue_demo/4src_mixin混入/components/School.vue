@@ -11,7 +11,7 @@
   // 组件的交互代码（方法，数据等）
 
   //引入混合对象
-  import mixin from './Mixin.js'
+  import mixin from '../mixin.js'
 
   //一般暴露单个对象使用默认暴露，结合组件的简写方式
   export default {

@@ -6,7 +6,7 @@ import Vue from "vue";
 //引入App组件，App是所有组件的父组件
 import App from "./App.vue";
 // 引入混入对象
-import Mixin from "./components/Mixin.js";
+import Mixin from "./mixin.js";
 
 // 关闭生产提示
 Vue.config.productionTip = false;
