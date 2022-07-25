@@ -1,4 +1,3 @@
-/* eslint-disable vue/multi-word-component-names */
 <template>
   <!-- 组件的结构 -->
   <div class="demo">
