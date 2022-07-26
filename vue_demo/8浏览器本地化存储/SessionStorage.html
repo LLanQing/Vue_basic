@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SessionStorage</title>
+</head>
+
+<body>
+  <h2>sessionStorage</h2>
+  <button onclick="saveData()">点击在sessionStorage添加数据</button><br><br>
+  <button onclick="deleteData()">点击在sessionStorage删除数据</button><br><br>
+  <button onclick="getData()">点击在sessionStorage获取数据</button><br><br>
+  <button onclick="clearData()">点击清空sessionStorage数据</button><br><br>
+
+  <script type='text/javascript'>
+    function saveData () {
+      sessionStorage.setItem('msg1', 'hello');
+      sessionStorage.setItem('msg2', 666);   //只能存储字符串，如果传入非字符串，自动转换成字符串
+      sessionStorage.setItem('msg3', JSON.stringify({ name: '张三', age: 18 }));
+
+    }
+    function deleteData () {
+      sessionStorage.removeItem('msg1');
+    }
+    function getData () {
+      const a = sessionStorage.getItem('msg3');
+      console.log(JSON.parse(a));
+    }
+    function clearData () {
+      sessionStorage.clear()
+    }
+  </script>
+</body>
+
+</html>
