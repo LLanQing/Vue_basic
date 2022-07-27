@@ -53,7 +53,7 @@ export default {
       })
     },
     //删除todo
-    handleDelete(_,id){ //利用_占位，这样传过来的参数没有使用不会warning
+    handleDelete(id){ //利用_占位，这样传过来的参数没有使用不会warning
       //过滤掉要删除的todo
       this.todos = this.todos.filter((todo) =>todo.id !== id)
     },
