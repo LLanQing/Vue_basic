@@ -83,7 +83,7 @@
 
    第二步使用混入：
 
-   ​ 全局混入：`Vue.mixin(xxx)`
+    全局混入：`Vue.mixin(xxx)`
    ​ 局部混入：`mixins:['xxx'] `
 
 ## 插件
@@ -122,21 +122,21 @@
 
 1. 组件化编码流程：
 
-   ​ (1).拆分静态组件：组件要按照功能点拆分，命名不要与 html 元素冲突。
+    (1).拆分静态组件：组件要按照功能点拆分，命名不要与 html 元素冲突。
 
-   ​ (2).实现动态组件：考虑好数据的存放位置，数据是一个组件在用，还是一些组件在用：
+    (2).实现动态组件：考虑好数据的存放位置，数据是一个组件在用，还是一些组件在用：
 
-   ​ 1).一个组件在用：放在组件自身即可。
+    1).一个组件在用：放在组件自身即可。
 
-   ​ 2). 一些组件在用：放在他们共同的父组件上（<span style="color:red">状态提升</span>）。
+    2). 一些组件在用：放在他们共同的父组件上（<span style="color:red">状态提升</span>）。
 
-   ​ (3).实现交互：从绑定事件开始。
+    (3).实现交互：从绑定事件开始。
 
 2. props 适用于：
 
-   ​ (1).父组件 ==> 子组件 通信
+    (1).父组件 ==> 子组件 通信
 
-   ​ (2).子组件 ==> 父组件 通信（要求父先给子一个函数）
+    (2).子组件 ==> 父组件 通信（要求父先给子一个函数）
 
 3. 使用 v-model 时要切记：v-model 绑定的值不能是 props 传过来的值，因为 props 是不可以修改的！
 
@@ -155,15 +155,15 @@
 
    2. `xxxxxStorage.getItem('person');`
 
-      ​ 该方法接受一个键名作为参数，返回键名对应的值。
+       该方法接受一个键名作为参数，返回键名对应的值。
 
    3. `xxxxxStorage.removeItem('key');`
 
-      ​ 该方法接受一个键名作为参数，并把该键名从存储中删除。
+       该方法接受一个键名作为参数，并把该键名从存储中删除。
 
    4. ` xxxxxStorage.clear()`
 
-      ​ 该方法会清空存储中的所有数据。
+       该方法会清空存储中的所有数据。
 
 4. 备注：
 
@@ -238,6 +238,8 @@
 
 ## 消息订阅与发布（pubsub）
 
+在Vue框架里面用得少，因为完全可以用事件总线代替还不用考虑this指向问题
+
 1. 一种组件间通信的方式，适用于<span style="color:red">任意组件间通信</span>。
 
 2. 使用步骤：
@@ -268,7 +270,7 @@
 2. 作用：在下一次 DOM 更新结束后执行其指定的回调。
 3. 什么时候用：当改变数据后，要基于更新后的新 DOM 进行某些操作时，要在 nextTick 所指定的回调函数中执行。
 
-## Vue 封装的过度与动画
+## Vue 封装的过渡与动画
 
 1. 作用：在插入、更新或移除 DOM 元素时，在合适的时候给元素添加样式类名。
 
@@ -301,7 +303,7 @@
 
 ### 方法一
 
-​ 在 vue.config.js 中添加如下配置：
+ 在 vue.config.js 中添加如下配置：
 
 ```js
 devServer: {
@@ -317,7 +319,7 @@ devServer: {
 
 ### 方法二
 
-​ 编写 vue.config.js 配置具体代理规则：
+ 编写 vue.config.js 配置具体代理规则：
 
 ```js
 module.exports = {
@@ -447,11 +449,11 @@ module.exports = {
 
 ### 1.概念
 
-​ 在 Vue 中实现集中式状态（数据）管理的一个 Vue 插件，对 vue 应用中多个组件的共享状态进行集中式的管理（读/写），也是一种组件间通信的方式，且适用于任意组件间通信。
+ 在 Vue 中实现集中式状态（数据）管理的一个 Vue 插件，对 vue 应用中多个组件的共享状态进行集中式的管理（读/写），也是一种组件间通信的方式，且适用于任意组件间通信。
 
 ### 2.何时使用？
 
-​ 多个组件需要共享数据时
+ 多个组件需要共享数据时
 
 ### 3.搭建 vuex 环境
 
@@ -595,13 +597,19 @@ module.exports = {
 
 3. <strong>mapMutations 方法：</strong>用于帮助我们生成与`mutations`对话的方法，即：包含`$store.commit(xxx)`的函数
 
+4. <strong>mapActions方法：</strong>用于帮助我们生成与`actions`对话的方法，即：包含`$store.dispatch(xxx)`的函数
+
    ```js
    methods:{
-       //靠mapActions生成：increment、decrement（对象形式）
-       ...mapMutations({increment:'JIA',decrement:'JIAN'}),
-
-       //靠mapMutations生成：JIA、JIAN（对象形式）
-       ...mapMutations(['JIA','JIAN']),
+       //靠mapActions生成：addOdd、addWait方法（对象形式）
+       // ...mapActions({addOdd:'addOdd',addWait:'addWait'}),
+       //靠mapActions生成：addOdd、addWait方法（数组形式）
+       ...mapActions(['addOdd','addWait']),
+   
+       // 靠mapMutations生成：add、subtract方法（对象形式）
+       ...mapMutations({add:'ADD',subtract:'SUBTRACT'}),
+       // 靠mapMutations生成：ADD、SUBTRACT方法（数组形式）
+       // ...mapMutations({add:'ADD',subtract:'SUBTRACT'}),
    }
    ```
 
@@ -900,7 +908,7 @@ module.exports = {
 
 ### 7.路由的 props 配置
 
-​ 作用：让路由组件更方便的收到参数
+ 作用：让路由组件更方便的收到参数
 
 ```js
 {
