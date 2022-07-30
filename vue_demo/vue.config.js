@@ -4,9 +4,9 @@ module.exports = defineConfig({
 	// 关闭代码保存校验
 	lintOnSave: false,
 	//开启代理服务器(方法一)
-	devServer: {
+	/* devServer: {
 		proxy: "http://localhost:5500", //将请求转发给端口号5500，注意这里只能配置单个代理，不能配置多个代理
-	},
+	}, */
 	/* 	//开启代理服务器(方式二) 多个代理
 	devServer: {
 		proxy: {
