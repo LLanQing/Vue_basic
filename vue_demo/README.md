@@ -975,6 +975,7 @@ module.exports = {
 2. 具体编码：
 
    ```vue
+   <!--include="xxx"，xxx是组件名 -->
    <keep-alive include="News"> 
        <router-view></router-view>
    </keep-alive>
