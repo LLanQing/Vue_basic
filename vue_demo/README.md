@@ -704,12 +704,14 @@ module.exports = {
    //引入Luyou 组件
    import About from "../components/About";
    import Home from "../components/Home";
-
+   
    //创建router实例对象，去管理一组一组的路由规则
    const router = new VueRouter({
-   	routes: [
+   	routes: [	
    		{
    			path: "/about",
+            /*注意：component不能加s，否则会报错：vue-router.esm.js?4713:16 [vue-router] Failed to resolve async component render: TypeError: Cannot read properties of undefined (reading '_self')
+   			后面的组件不能加{},否则会报错：Failed to mount component: template or render function not defined */
    			component: About,
    		},
    		{
@@ -718,7 +720,7 @@ module.exports = {
    		},
    	],
    });
-
+   
    //暴露router
    export default router;
    ```
@@ -1062,4 +1064,4 @@ module.exports = {
 4. history 模式：
    1. 地址干净，美观 。
    2. 兼容性和 hash 模式相比略差。
-   3. 应用部署上线时需要后端人员支持，解决刷新页面服务端 404 的问题。
+   3. 应用部署上线时需要后端人员支持，解决刷新页面服务端 404 的问题。 
