@@ -27,7 +27,7 @@ export default new VueRouter({
 			// 多级路由中的子路由使用children属性写在对应的一级路由中
 			children: [
 				{
-					// 注意path不能带/，VueRouter已经自动加上了/,或者写完整路径/home/messages
+					// 注意子级路由path不能带/，VueRouter已经自动加上了/,或者写完整路径/home/messages
 					path: "/home/messages", //此处一定不要写：/message
 					component: Messages,
 					children: [
